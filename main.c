@@ -53,6 +53,30 @@ double calculateClassAverage(double grades[], int numGrades){
     return average;
 }
 
+double calculateClassMinimum(double grades[], int numGrades) {
+    double min = 101.0; // it is impossible to obtain, so this is effectively +inf
+    for (int i = 0; i < numGrades; i++) {
+        if (grades[i] < min) {
+            min = grades[i];
+        }
+    }
+    return min;
+}
+
+double calculateClassMaximum(double grades[], int numGrades) {
+    double max = -1.0; // it is impossible to obtain, so this is effectively -inf
+    for (int i = 0; i < numGrades; i++) {
+        if (grades[i] > max) {
+            max = grades[i];
+        }
+    }
+    return max;
+}
+
+double calculateClassStdDev(double grades[], int numGrades) {
+    return -1.0;
+}
+
 int main(int argc, char * argv[]) {
 
     if (argc < 2) {
@@ -75,6 +99,7 @@ int main(int argc, char * argv[]) {
         populateGradeArray(grades, dataFile);
         double classAverage = calculateClassAverage(grades, numGrades);
         DEBUG && printf("classAverage: %.2f\n", classAverage);
+
     }
 
     return 0;
