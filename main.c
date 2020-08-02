@@ -102,7 +102,8 @@ void calculateStatistics(double grades[], int numGrades, double* min, double* ma
     for (int i = 0; i < numGrades; i++) {
         if (grades[i] < *min) {
             *min = grades[i];
-        } else if (grades[i] > *max) {
+        }
+        if (grades[i] > *max) {
             *max = grades[i];
         }
         *average += grades[i];
