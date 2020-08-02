@@ -96,6 +96,14 @@ void calculateClassMinMaxAverage(double grades[], int numGrades, double* min, do
     }
     *average /= (float)numGrades;
 }
+
+double calculateClassStdDev(double grades[], int numGrades, double average) {
+    double numerator = 0.0;
+    for (int i = 0; i < numGrades; i++) {
+        numerator += pow((grades[i] - average), 2);
+    }
+    return sqrt(numerator / (float)numGrades); // use them maths skills boi
+}
 */
 
 void calculateStatistics(double grades[], int numGrades, double* min, double* max, double* average, double* stdDev) {
@@ -115,14 +123,6 @@ void calculateStatistics(double grades[], int numGrades, double* min, double* ma
     }
     *stdDev = sqrt(numerator / (float)numGrades);
 }
-
-// double calculateClassStdDev(double grades[], int numGrades, double average) {
-//     double numerator = 0.0;
-//     for (int i = 0; i < numGrades; i++) {
-//         numerator += pow((grades[i] - average), 2);
-//     }
-//     return sqrt(numerator / (float)numGrades); // use them maths skills boi
-// }
 
 void printOutput(int numGrades, double outputs[]) {
     // printf("\n");
