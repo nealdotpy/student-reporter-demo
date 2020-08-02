@@ -45,43 +45,82 @@ void populateGradeArray(double grades[], FILE* dataFile) {
     }
 }
 
-double calculateClassAverage(double grades[], int numGrades){
-    double average = 0.0;
-    for (int i = 0; i < numGrades; i++) {
-        // printf("ADDING: %.5f\n",grades[i]);
-        average += grades[i];
-    }
-    average /= (float)numGrades;
-    return average;
-}
+// double calculateClassAverage(double grades[], int numGrades){
+//     double average = 0.0;
+//     for (int i = 0; i < numGrades; i++) {
+//         // printf("ADDING: %.5f\n",grades[i]);
+//         average += grades[i];
+//     }
+//     average /= (float)numGrades;
+//     return average;
+// }
 
-double calculateClassMinimum(double grades[], int numGrades) {
-    double min = 1000.0; // it is impossible to obtain, so this is effectively +inf
-    for (int i = 0; i < numGrades; i++) {
-        if (grades[i] < min) {
-            min = grades[i];
-        }
-    }
-    return min;
-}
+// double calculateClassMinimum(double grades[], int numGrades) {
+//     double min = 1000.0; // it is impossible to obtain, so this is effectively +inf
+//     for (int i = 0; i < numGrades; i++) {
+//         if (grades[i] < min) {
+//             min = grades[i];
+//         }
+//     }
+//     return min;
+// }
 
-double calculateClassMaximum(double grades[], int numGrades) {
-    double max = -1.0; // it is impossible to obtain, so this is effectively -inf
-    for (int i = 0; i < numGrades; i++) {
-        if (grades[i] > max) {
-            max = grades[i];
-        }
-    }
-    return max;
-}
+// double calculateClassMaximum(double grades[], int numGrades) {
+//     double max = -1.0; // it is impossible to obtain, so this is effectively -inf
+//     for (int i = 0; i < numGrades; i++) {
+//         if (grades[i] > max) {
+//             max = grades[i];
+//         }
+//     }
+//     return max;
+// }
 
-double calculateClassStdDev(double grades[], int numGrades, double average) {
+// void calculateClassMinMax(double grades[], int numGrades, double* min, double* max) {
+//     for (int i = 0; i < numGrades; i++) {
+//         if (grades[i] < *min) {
+//             *min = grades[i];
+//         } else if (grades[i] > *max) {
+//             *max = grades[i];
+//         }
+//     }
+// }
+
+// void calculateClassMinMaxAverage(double grades[], int numGrades, double* min, double* max, double* average) {
+//     for (int i = 0; i < numGrades; i++) {
+//         if (grades[i] < *min) {
+//             *min = grades[i];
+//         } else if (grades[i] > *max) {
+//             *max = grades[i];
+//         }
+//         *average += grades[i];
+//     }
+//     *average /= (float)numGrades;
+// }
+
+void calculateStatistics(double grades[], int numGrades, double* min, double* max, double* average, double* stdDev) {
     double numerator = 0.0;
     for (int i = 0; i < numGrades; i++) {
-        numerator += pow((grades[i] - average), 2);
+        if (grades[i] < *min) {
+            *min = grades[i];
+        } else if (grades[i] > *max) {
+            *max = grades[i];
+        }
+        *average += grades[i];
     }
-    return sqrt(numerator / (float)numGrades); // use them maths skills boi
+    *average /= (float)numGrades;
+    for (int i = 0; i < numGrades; i++) {
+        numerator += pow((grades[i] - *average), 2);
+    }
+    *stdDev = sqrt(numerator / (float)numGrades);
 }
+
+// double calculateClassStdDev(double grades[], int numGrades, double average) {
+//     double numerator = 0.0;
+//     for (int i = 0; i < numGrades; i++) {
+//         numerator += pow((grades[i] - average), 2);
+//     }
+//     return sqrt(numerator / (float)numGrades); // use them maths skills boi
+// }
 
 void printOutput(int numGrades, double outputs[]) {
     // printf("\n");
@@ -109,22 +148,30 @@ int main(int argc, char * argv[]) {
             exit(1);
         }
         // create an array only as big as you need.
+        // double grades[numGrades]; this is the basic way to do it, using stack space.      
+        
         int numGrades = getNumGradesInDataFile(dataFile);
-        // double grades[numGrades];
-        double * grades;
-        grades = (double *) malloc(numGrades * sizeof(double));
+        double classMin = 1000.0;
+        double classMax = -1.0;
+        double classAverage = 0.0;
+        double classStdDev = 0.0;
+        double *grades = (double *) malloc(numGrades * sizeof(double));
         populateGradeArray(grades, dataFile);
-        double classAverage = calculateClassAverage(grades, numGrades);
-        DEBUG && printf("classAverage: %.2f\n", classAverage);
-        double classMin = calculateClassMinimum(grades, numGrades);
-        DEBUG && printf("classMin: %.2f\n", classMin);
-        double classMax = calculateClassMaximum(grades, numGrades);
-        DEBUG && printf("classMax: %.2f\n", classMax);
-        double classStdDev = calculateClassStdDev(grades, numGrades, classAverage);
-        DEBUG && printf("classStdDev: %.2f\n", classStdDev);
+        calculateStatistics(grades, numGrades, &classMin, &classMax, &classAverage, &classStdDev);
+
+        // double classAverage = calculateClassAverage(grades, numGrades);
+        // double classMin = calculateClassMinimum(grades, numGrades);
+        // double classMax = calculateClassMaximum(grades, numGrades);
+        // double classStdDev = calculateClassStdDev(grades, numGrades, classAverage);
         double outputArray[4] = {classAverage, classMin, classMax, classStdDev};
+        
+        DEBUG && printf("classAverage: %.2f\n", classAverage);      
+        DEBUG && printf("classMin: %.2f\n", classMin);
+        DEBUG && printf("classMax: %.2f\n", classMax);
+        DEBUG && printf("classStdDev: %.2f\n", classStdDev);
+
         printOutput(numGrades, outputArray);
-        free(grades);
+        free(grades); // no mem leaks :)
     }
 
     return 0;
