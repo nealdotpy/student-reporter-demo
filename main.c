@@ -110,9 +110,9 @@ int main(int argc, char * argv[]) {
         }
         // create an array only as big as you need.
         int numGrades = getNumGradesInDataFile(dataFile);
-        double grades[numGrades];
-        // double * grades;
-        // grades = (double *) malloc(numGrades);
+        // double grades[numGrades];
+        double * grades;
+        grades = (double *) malloc(numGrades * sizeof(double));
         populateGradeArray(grades, dataFile);
         double classAverage = calculateClassAverage(grades, numGrades);
         DEBUG && printf("classAverage: %.2f\n", classAverage);
@@ -124,7 +124,7 @@ int main(int argc, char * argv[]) {
         DEBUG && printf("classStdDev: %.2f\n", classStdDev);
         double outputArray[4] = {classAverage, classMin, classMax, classStdDev};
         printOutput(numGrades, outputArray);
-        // free(grades);
+        free(grades);
     }
 
     return 0;
