@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <math.h>
 
 #define FILE_PATH_BUFFER_SIZE 255
 #define DEBUG false // set to true to see stdout print statements.
@@ -45,16 +46,17 @@ void populateGradeArray(double grades[], FILE* dataFile) {
 }
 
 double calculateClassAverage(double grades[], int numGrades){
-    double average;
+    double average = 0.0;
     for (int i = 0; i < numGrades; i++) {
+        // printf("ADDING: %.5f\n",grades[i]);
         average += grades[i];
     }
-    average /= numGrades;
+    average /= (float)numGrades;
     return average;
 }
 
 double calculateClassMinimum(double grades[], int numGrades) {
-    double min = 101.0; // it is impossible to obtain, so this is effectively +inf
+    double min = 1000.0; // it is impossible to obtain, so this is effectively +inf
     for (int i = 0; i < numGrades; i++) {
         if (grades[i] < min) {
             min = grades[i];
@@ -73,8 +75,23 @@ double calculateClassMaximum(double grades[], int numGrades) {
     return max;
 }
 
-double calculateClassStdDev(double grades[], int numGrades) {
-    return -1.0;
+double calculateClassStdDev(double grades[], int numGrades, double average) {
+    double numerator = 0.0;
+    for (int i = 0; i < numGrades; i++) {
+        numerator += pow((grades[i] - average), 2);
+    }
+    return sqrt(numerator / 8.0); // use them maths skills boi
+}
+
+void printOutput(int numGrades, double outputs[]) {
+    // printf("\n");
+    printf("\nThere are %d students in the class.\n\n", numGrades);
+    printf("stats:\n%s\n", "-------------------------------------");
+    printf("average%30.2f\n", outputs[0]);
+    printf("min%34.2f\n", outputs[1]);
+    printf("max%34.2f\n", outputs[2]);
+    printf("std. dev.%28.2f\n", outputs[3]);
+    printf("%s\n\n", "-------------------------------------");
 }
 
 int main(int argc, char * argv[]) {
@@ -83,7 +100,6 @@ int main(int argc, char * argv[]) {
         printf("You're missing a command line argument.\n");
         printf("Specify a filename in the data/ directory containing grades.\n");
     } else {
-
         char fullPath[FILE_PATH_BUFFER_SIZE];
         getFullPath(argv[1], fullPath, DEBUG);
         FILE* dataFile = fopen(fullPath, "r");
@@ -92,14 +108,20 @@ int main(int argc, char * argv[]) {
             printf("There was an error with your file!\n");
             exit(1);
         }
-
         // create an array only as big as you need.
         int numGrades = getNumGradesInDataFile(dataFile);
         double grades[numGrades]; 
         populateGradeArray(grades, dataFile);
         double classAverage = calculateClassAverage(grades, numGrades);
         DEBUG && printf("classAverage: %.2f\n", classAverage);
-
+        double classMin = calculateClassMinimum(grades, numGrades);
+        DEBUG && printf("classMin: %.2f\n", classMin);
+        double classMax = calculateClassMaximum(grades, numGrades);
+        DEBUG && printf("classMax: %.2f\n", classMax);
+        double classStdDev = calculateClassStdDev(grades, numGrades, classAverage);
+        DEBUG && printf("classStdDev: %.2f\n", classStdDev);
+        double outputArray[4] = {classAverage, classMin, classMax, classStdDev};
+        printOutput(numGrades, outputArray);
     }
 
     return 0;
