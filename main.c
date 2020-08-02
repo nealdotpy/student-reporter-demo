@@ -24,9 +24,9 @@ void getFullPath(char* filename, char* fullPath, bool debug) {
         printf("full file path: %s\n", fullPath);
     }
 }
-
+/*
 int getNumGradesInDataFile(FILE* dataFile) {
-    /* We know the first line of the file tells us the number of grades. Leverage this.*/
+    // We know the first line of the file tells us the number of grades. Leverage this.
     char line[10];
     fgets(line, 10, dataFile);
     DEBUG && printf("LINE: %s", line);
@@ -45,57 +45,58 @@ void populateGradeArray(double grades[], FILE* dataFile) {
     }
 }
 
-// double calculateClassAverage(double grades[], int numGrades){
-//     double average = 0.0;
-//     for (int i = 0; i < numGrades; i++) {
-//         // printf("ADDING: %.5f\n",grades[i]);
-//         average += grades[i];
-//     }
-//     average /= (float)numGrades;
-//     return average;
-// }
+double calculateClassAverage(double grades[], int numGrades){
+    double average = 0.0;
+    for (int i = 0; i < numGrades; i++) {
+        // printf("ADDING: %.5f\n",grades[i]);
+        average += grades[i];
+    }
+    average /= (float)numGrades;
+    return average;
+}
 
-// double calculateClassMinimum(double grades[], int numGrades) {
-//     double min = 1000.0; // it is impossible to obtain, so this is effectively +inf
-//     for (int i = 0; i < numGrades; i++) {
-//         if (grades[i] < min) {
-//             min = grades[i];
-//         }
-//     }
-//     return min;
-// }
+double calculateClassMinimum(double grades[], int numGrades) {
+    double min = 1000.0; // it is impossible to obtain, so this is effectively +inf
+    for (int i = 0; i < numGrades; i++) {
+        if (grades[i] < min) {
+            min = grades[i];
+        }
+    }
+    return min;
+}
 
-// double calculateClassMaximum(double grades[], int numGrades) {
-//     double max = -1.0; // it is impossible to obtain, so this is effectively -inf
-//     for (int i = 0; i < numGrades; i++) {
-//         if (grades[i] > max) {
-//             max = grades[i];
-//         }
-//     }
-//     return max;
-// }
+double calculateClassMaximum(double grades[], int numGrades) {
+    double max = -1.0; // it is impossible to obtain, so this is effectively -inf
+    for (int i = 0; i < numGrades; i++) {
+        if (grades[i] > max) {
+            max = grades[i];
+        }
+    }
+    return max;
+}
 
-// void calculateClassMinMax(double grades[], int numGrades, double* min, double* max) {
-//     for (int i = 0; i < numGrades; i++) {
-//         if (grades[i] < *min) {
-//             *min = grades[i];
-//         } else if (grades[i] > *max) {
-//             *max = grades[i];
-//         }
-//     }
-// }
+void calculateClassMinMax(double grades[], int numGrades, double* min, double* max) {
+    for (int i = 0; i < numGrades; i++) {
+        if (grades[i] < *min) {
+            *min = grades[i];
+        } else if (grades[i] > *max) {
+            *max = grades[i];
+        }
+    }
+}
 
-// void calculateClassMinMaxAverage(double grades[], int numGrades, double* min, double* max, double* average) {
-//     for (int i = 0; i < numGrades; i++) {
-//         if (grades[i] < *min) {
-//             *min = grades[i];
-//         } else if (grades[i] > *max) {
-//             *max = grades[i];
-//         }
-//         *average += grades[i];
-//     }
-//     *average /= (float)numGrades;
-// }
+void calculateClassMinMaxAverage(double grades[], int numGrades, double* min, double* max, double* average) {
+    for (int i = 0; i < numGrades; i++) {
+        if (grades[i] < *min) {
+            *min = grades[i];
+        } else if (grades[i] > *max) {
+            *max = grades[i];
+        }
+        *average += grades[i];
+    }
+    *average /= (float)numGrades;
+}
+*/
 
 void calculateStatistics(double grades[], int numGrades, double* min, double* max, double* average, double* stdDev) {
     double numerator = 0.0;
