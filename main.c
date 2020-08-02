@@ -28,21 +28,30 @@ int getNumGradesInDataFile(FILE* dataFile) {
     /* We know the first line of the file tells us the number of grades. Leverage this.*/
     char line[10];
     fgets(line, 10, dataFile);
-    DEBUG && printf("LINE: <%s>", line);
+    DEBUG && printf("LINE: %s", line);
     int numGrades = atoi(line);
-    DEBUG && printf("numGrades<%d>\n", numGrades);
+    DEBUG && printf("numGrades: %d\n", numGrades);
     return numGrades;
 }
 
-void populateGradeArray(float grades[]) {
-    float value; // temp holder for each space-separated value in file
-    while (fscanf(dataFile, "%f", &value) == 1) {
+void populateGradeArray(double grades[], FILE* dataFile) {
+    double value; // temp holder for each space-separated value in file
+    int i = 0;
+    while (fscanf(dataFile, "%lf", &value) == 1) {
+        grades[i] = value;
         DEBUG && printf("VALUE: %f\n", value);
-        
+        i++;
     }
 }
 
-float 
+double calculateClassAverage(double grades[], int numGrades){
+    double average;
+    for (int i = 0; i < numGrades; i++) {
+        average += grades[i];
+    }
+    average /= numGrades;
+    return average;
+}
 
 int main(int argc, char * argv[]) {
 
@@ -61,9 +70,11 @@ int main(int argc, char * argv[]) {
         }
 
         // create an array only as big as you need.
-        float grades[getNumGradesInDataFile(dataFile)]; 
-        populateGradeArray(grades);
-
+        int numGrades = getNumGradesInDataFile(dataFile);
+        double grades[numGrades]; 
+        populateGradeArray(grades, dataFile);
+        double classAverage = calculateClassAverage(grades, numGrades);
+        DEBUG && printf("classAverage: %.2f\n", classAverage);
     }
 
     return 0;
