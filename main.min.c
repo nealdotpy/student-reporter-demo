@@ -32,11 +32,8 @@ void populateGradeArray(double grades[], FILE* dataFile) {
 void calculateStatistics(double grades[], int numGrades, double* min, double* max, double* average, double* stdDev) {
     double numerator = 0.0;
     for (int i = 0; i < numGrades; i++) {
-        if (grades[i] < *min) {
-            *min = grades[i];
-        } else if (grades[i] > *max) {
-            *max = grades[i];
-        }
+        if (grades[i] < *min) *min = grades[i];
+        if (grades[i] > *max) *max = grades[i];
         *average += grades[i];
     }
     *average /= (float)numGrades;
