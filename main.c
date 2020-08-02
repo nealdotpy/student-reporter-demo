@@ -80,7 +80,7 @@ double calculateClassStdDev(double grades[], int numGrades, double average) {
     for (int i = 0; i < numGrades; i++) {
         numerator += pow((grades[i] - average), 2);
     }
-    return sqrt(numerator / 8.0); // use them maths skills boi
+    return sqrt(numerator / (float)numGrades); // use them maths skills boi
 }
 
 void printOutput(int numGrades, double outputs[]) {
