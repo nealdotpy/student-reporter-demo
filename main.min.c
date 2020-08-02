@@ -84,7 +84,7 @@ void processStudentData(char* filename) {
     free(grades); // no mem leaks :)
 }
 
-int main(int argc, char * argv[]) {
+int main(int argc, char* argv[]) {
     if (argc < 2) missingArgumentException();
     else processStudentData(argv[1]);
     return 0;
