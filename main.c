@@ -8,7 +8,7 @@
 #define DEBUG false // set to true to see stdout print statements.
 // #define DEBUG 0 -> this is equally valid since bool is just {0,1}
 
-void getFullPath(char* filename, char* fullPath, bool debug) {
+void getFullPath(char* filename, char* fullPath) {
     /* 
     the passed filename must be less than 
     FILE_PATH_BUFFER_SIZE - len('data/').
@@ -18,7 +18,7 @@ void getFullPath(char* filename, char* fullPath, bool debug) {
     char* path = "data/";
     strcpy(fullPath, path);
     strcat(fullPath, filename);
-    if (debug) {
+    if (DEBUG) {
         printf("path: %s\n", path);
         printf("filename: %s\n", filename);
         printf("full file path: %s\n", fullPath);
@@ -142,7 +142,7 @@ int main(int argc, char * argv[]) {
         printf("Specify a filename in the data/ directory containing grades.\n");
     } else {
         char fullPath[FILE_PATH_BUFFER_SIZE];
-        getFullPath(argv[1], fullPath, DEBUG);
+        getFullPath(argv[1], fullPath);
         FILE* dataFile = fopen(fullPath, "r");
         
         if (dataFile == NULL) {
